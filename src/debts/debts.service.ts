@@ -1,8 +1,10 @@
 import { HttpException } from '@nestjs/common';
 import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { totalmem } from 'os';
 import { Debts } from 'src/database/entities/debts.entity';
 import { Repository } from 'typeorm/repository/Repository';
-import { CreateOrUpdateDebtsDTO } from './dto/createDebts.dto';
+import { CreateDebtsDTO } from './dto/createDebts.dto';
+import { UpdateDebtsDTO } from './dto/updateDebts.dto';
 
 @Injectable()
 export class DebtsService {
@@ -26,15 +28,12 @@ export class DebtsService {
     return debt;
   }
 
-  async createDebt(createDebt: CreateOrUpdateDebtsDTO): Promise<Debts> {
+  async createDebt(createDebt: CreateDebtsDTO): Promise<Debts> {
     const debt = await this.debtsRepository.save(createDebt);
     return debt;
   }
 
-  async updateDebt(
-    debtsId: number,
-    debtData: CreateOrUpdateDebtsDTO,
-  ): Promise<void> {
+  async updateDebt(debtsId: number, debtData: UpdateDebtsDTO): Promise<void> {
     let debt = await this.findById(debtsId);
     debt = { ...debt, ...debtData };
     await this.debtsRepository.save(debt);
@@ -52,5 +51,19 @@ export class DebtsService {
       },
     });
     return debts;
+  }
+
+  async getTotalDebtsPerCustomers(): Promise<any[]> {
+    const total = await this.debtsRepository
+      .createQueryBuilder('debt')
+      .select('debt.customersId', 'customersId')
+      .addSelect('SUM(debt.value)', 'total')
+      .groupBy('debt.customersId')
+      .getRawMany();
+    return total;
+  }
+
+  async deleteAllDebtsFromCustomers(customersId: number): Promise<void> {
+    await this.debtsRepository.delete({ customersId });
   }
 }

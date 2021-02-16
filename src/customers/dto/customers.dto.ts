@@ -1,4 +1,5 @@
-export interface CustomersDTO {
+export class CustomersDTO {
+  totalDebts?: number;
   id: number;
   name: string;
   username: string;

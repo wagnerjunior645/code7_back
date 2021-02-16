@@ -1,15 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateDebtsDTO {
-  @ApiProperty()
-  customerId: number;
-
-  @ApiProperty()
+export class UpdateDebtsDTO {
+  @ApiProperty({ required: false })
   value: number;
 
   @ApiProperty({ required: false })
   description?: string;
 
   @ApiProperty()
-  debtsDate: string;
+  debtsDate?: string;
 }

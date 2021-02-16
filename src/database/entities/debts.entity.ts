@@ -15,6 +15,9 @@ export class Debts {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: string;
 
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  debtsDate: string;
+
   @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
   value: number;
 }

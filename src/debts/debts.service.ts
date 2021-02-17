@@ -1,6 +1,5 @@
 import { HttpException } from '@nestjs/common';
 import { HttpStatus, Inject, Injectable } from '@nestjs/common';
-import { totalmem } from 'os';
 import { Debts } from 'src/database/entities/debts.entity';
 import { Repository } from 'typeorm/repository/Repository';
 import { CreateDebtsDTO } from './dto/createDebts.dto';
